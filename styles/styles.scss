@@ -1,0 +1,77 @@
+$animationDuration:3s;
+$fontSize: 4em;
+
+@mixin size($height: 100vh, $width: 100%) {
+    width: $width;
+    height: $height;
+}
+
+@mixin animation($animate...) {
+    $max: length($animate);
+    $animations: '';
+
+    @for $i from 1 through $max {
+        $animations: #{$animations + nth($animate, $i)};
+
+        @if $i < $max {
+            $animations: #{$animations + ", "};
+        }
+    }
+    -webkit-animation: $animations;
+    -moz-animation:    $animations;
+    -o-animation:      $animations;
+    animation:         $animations;
+}
+
+@mixin keyframes($animationName) {
+    @-webkit-keyframes #{$animationName} {
+        @content;
+    }
+    @-moz-keyframes #{$animationName} {
+        @content;
+    }
+    @-o-keyframes #{$animationName} {
+        @content;
+    }
+    @keyframes #{$animationName} {
+        @content;
+    }
+}
+
+@include keyframes(animate) {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 10rem;
+    }
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    @include size;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    @include size(50%);
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: $fontSize;
+}
+
+.expand {
+    width: 0;
+    overflow: hidden;
+    @include animation('animate #{$animationDuration} linear infinite');
+}
